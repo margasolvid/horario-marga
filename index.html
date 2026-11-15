@@ -99,7 +99,7 @@ tr.click{cursor:pointer}
   <div class="saldo" id="saldo"></div>
   <nav class="tabs" role="tablist">
     <button role="tab" aria-selected="true" data-v="semana" id="t-semana">Semana</button>
-    <button role="tab" aria-selected="false" data-v="acum" id="t-acum">Acumulación de horas</button>
+    <button role="tab" aria-selected="false" data-v="acum" id="t-acum">Bolsa · acumulación de horas</button>
     <button role="tab" aria-selected="false" data-v="ajustes" id="t-ajustes">Ajustes</button>
   </nav>
 
@@ -231,7 +231,7 @@ function renderSemana() {
   $("dias").innerHTML = w.dias.map(({ f, e }, i) => {
     const r = S.dias[f] || {}, tr = (r.tramos && r.tramos.length) ? r.tramos : [["", ""]];
     const chip = e.tipo === "nc" ? `<span class="chip nc">No computa · cuenta ${hm(objDia())}</span>`
-      : e.tipo === "ok" ? `<span class="chip ok">${hm(e.hechas)} h${e.hechas - objDia() > 1e-9 ? " · " + firmado(e.hechas - objDia()) : ""}</span>`
+      : e.tipo === "ok" ? `<span class="chip ok">${hm(e.hechas)} h${e.hechas - objDia() > 1e-9 ? " · " + firmado(e.hechas - objDia()) + " a la bolsa" : ""}</span>`
       : e.tipo === "mal" ? `<span class="chip mal">${hm(e.hechas)} h · ${firmado(e.hechas - objDia())}</span>`
       : e.tipo === "fuera" ? `<span class="chip pend">Fuera del periodo</span>` : `<span class="chip pend">Pendiente</span>`;
     return `<div class="day ${f === HOY ? "hoy" : ""} ${r.nc ? "nc" : ""}" data-f="${f}">
@@ -247,7 +247,7 @@ function renderSemana() {
       </div></div>`;
   }).join("");
   const cls = w.dif > 1e-9 ? "pos" : w.dif < -1e-9 ? "neg" : "";
-  $("wsum").innerHTML = `<b class="num">${hm(w.comp)} de ${hm(w.debe)} h</b><span>computadas en los días que ya cuentan · diferencia <b class="num ${cls}" style="display:inline;font-size:15px">${firmado(w.dif)}</b>${w.dif > 1e-9 ? " (pasa a acumulación)" : ""}</span>`;
+  $("wsum").innerHTML = `<b class="num">${hm(w.comp)} de ${hm(w.debe)} h</b><span>computadas en los días que ya cuentan · diferencia <b class="num ${cls}" style="display:inline;font-size:15px">${firmado(w.dif)}</b>${w.dif > 1e-9 ? " (va a la bolsa de horas)" : ""}</span>`;
 }
 
 function renderAcum() {
